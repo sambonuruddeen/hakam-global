@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use App\Models\User;
 
+use App\Http\Resources\AuthenticationResource;
+use App\Helpers\ApiResponse;
+
 class AuthController extends Controller
 {
     //
@@ -53,9 +56,13 @@ class AuthController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Invalid email or password.'],
-            ]);
+            // throw ValidationException::withMessages([
+            //     'email' => ['Invalid email or password.'],
+            // ]);
+
+            return ApiResponse::error('Invalid email or password.', 401);
+            
+
         }
 
         // Delete old tokens (optional for security)
@@ -63,11 +70,14 @@ class AuthController extends Controller
 
         $token = $user->createToken('mobile')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => $user,
-            'token' => $token,
-        ]);
+        // return response()->json([
+        //     'message' => 'Login successful',
+        //     'user' => $user,
+        //     'token' => $token,
+        // ]);
+        $user['token'] = $token;
+
+        return ApiResponse::success($user, 'Logged in successfully');
     }
 
     /**
@@ -78,9 +88,14 @@ class AuthController extends Controller
      */
     public function me(Request $request)
     {
-        return response()->json([
-            'user' => $request->user(),
-        ]);
+        if(!$request->user()) {
+            return ApiResponse::error('Unauthorized', 401);
+        }
+
+        return ApiResponse::success($request->user(), 'Logged in successfully');
+        // return response()->json([
+        //     'user' => $request->user(),
+        // ]);
     }
 
     /**
@@ -93,9 +108,7 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Logged out successfully',
-        ]);
+        return ApiResponse::success(null, 'Logged out successfully');
     }
 
     /**
@@ -108,9 +121,7 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
 
-        return response()->json([
-            'message' => 'Logged out from all devices',
-        ]);
+        return ApiResponse::success(null, 'Logged out from all devices');
     }
 
     /**
@@ -128,12 +139,14 @@ class AuthController extends Controller
         );
 
         if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => __($status)], 200);
+            // return response()->json(['message' => __($status)], 200);
+            // return ApiResponse::success(null, __($status));
         }
 
         throw ValidationException::withMessages([
             'email' => [__($status)],
         ]);
+        
     }
 
     /**
@@ -149,7 +162,8 @@ class AuthController extends Controller
         $user = $request->user();
 
         if (! Hash::check($request->current_password, $user->password)) {
-            return response()->json(['message' => 'Current password is incorrect'], 422);
+            // return response()->json(['message' => 'Current password is incorrect'], 422);
+            return ApiResponse::error('Current password is incorrect', 422);
         }
 
         $user->forceFill([
@@ -159,7 +173,8 @@ class AuthController extends Controller
         // (Optional) Revoke all other tokens for security
         $user->tokens()->delete();
 
-        return response()->json(['message' => 'Password changed successfully'], 200);
+        // return response()->json(['message' => 'Password changed successfully'], 200);
+        return ApiResponse::success(null, 'Password changed successfully', 200);
     }
 
 
