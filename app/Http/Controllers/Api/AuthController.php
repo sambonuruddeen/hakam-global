@@ -77,7 +77,7 @@ class AuthController extends Controller
         // ]);
         $user['token'] = $token;
 
-        return ApiResponse::success($user, 'Logged in successfully');
+        return ApiResponse::success(new AuthenticationResource($user), 'Logged in successfully');
     }
 
     /**
@@ -92,7 +92,7 @@ class AuthController extends Controller
             return ApiResponse::error('Unauthorized', 401);
         }
 
-        return ApiResponse::success($request->user(), 'Logged in successfully');
+        return ApiResponse::success(new AuthenticationResource($request->user()), 'Logged in successfully');
         // return response()->json([
         //     'user' => $request->user(),
         // ]);
