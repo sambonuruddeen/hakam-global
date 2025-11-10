@@ -47,7 +47,7 @@ class UserTableSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
          // Create users
-        $users = ['admin', 'enumerator', 'user'];
+        $users = ['admin', 'enumerator', 'supervisor'];
         foreach ($users as $user) {
             $new_user = User::factory()->create([
                 'email' => $user . '@fdc-app.com',
