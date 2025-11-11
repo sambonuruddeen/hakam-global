@@ -28,6 +28,7 @@ class CustomerValidation extends Model
         'new_customer',
         'remarks',
         'status',
+        'supervisor_remarks',
         'photo',
         'created_by',
         'updated_by'
