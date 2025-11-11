@@ -25,7 +25,7 @@ class UserTableSeeder extends Seeder
         Permission::create(['guard_name' => 'api', 'name' => 'view validation']);
         Permission::create(['guard_name' => 'api', 'name' => 'edit validation']);
         Permission::create(['guard_name' => 'api', 'name' => 'delete validation']);
-        
+
 
         // Web Permissions
         Permission::create(['guard_name' => 'web', 'name' => 'create validation']);
@@ -40,9 +40,9 @@ class UserTableSeeder extends Seeder
         $enumerator = Role::create(['name' => 'enumerator', 'guard_name' => 'api']);
         $enumerator->givePermissionTo(['create validation']);
 
-        $userRole = Role::create(['name' => 'user', 'guard_name' => 'api']);
+        $userRole = Role::create(['name' => 'supervisor', 'guard_name' => 'api']);
         $userRole->givePermissionTo(['view validation']);
-        
+
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 

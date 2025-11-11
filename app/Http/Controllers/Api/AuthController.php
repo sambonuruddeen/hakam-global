@@ -42,7 +42,7 @@ class AuthController extends Controller
 
     /**
      * Login user and return access token.
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -61,8 +61,6 @@ class AuthController extends Controller
             // ]);
 
             return ApiResponse::error('Invalid email or password.', 401);
-            
-
         }
 
         // Delete old tokens (optional for security)
@@ -82,7 +80,7 @@ class AuthController extends Controller
 
     /**
      * Return the authenticated user.
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -100,7 +98,7 @@ class AuthController extends Controller
 
     /**
      * Logout user and revoke token.
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -113,7 +111,7 @@ class AuthController extends Controller
 
     /**
      * Logout user from all devices (optional).
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -146,7 +144,7 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => [__($status)],
         ]);
-        
+
     }
 
     /**

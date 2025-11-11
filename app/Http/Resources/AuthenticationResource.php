@@ -23,6 +23,7 @@ class AuthenticationResource extends JsonResource
                 'phone_number' => $this->phone_number,
                 'role'  => $this->getRoleNames()->first(), // TODO: list all roles if multiple
                 'profile_image' => $this->profile_image,
+                'token' => $this->token
         ];
     }
 }
