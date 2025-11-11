@@ -86,7 +86,7 @@ class AuthController extends Controller
      */
     public function me(Request $request)
     {
-        if(!$request->user()) {
+        if (!$request->user()) {
             return ApiResponse::error('Unauthorized', 401);
         }
 
@@ -144,7 +144,6 @@ class AuthController extends Controller
         throw ValidationException::withMessages([
             'email' => [__($status)],
         ]);
-
     }
 
     /**
@@ -172,8 +171,6 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         // return response()->json(['message' => 'Password changed successfully'], 200);
-        return ApiResponse::success(null, 'Password changed successfully', 200);
+        return ApiResponse::success(null, 'Password changed successfully');
     }
-
-
 }

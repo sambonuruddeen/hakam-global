@@ -52,6 +52,7 @@ class UserTableSeeder extends Seeder
             $new_user = User::factory()->create([
                 'email' => $user . '@fdc-app.com',
                 'password' => Hash::make('password'),
+                'phone_number' => '1234567890',
                 'name' => ucwords($user),
                 'email_verified_at' => now(),
             ]); // Ensure unique email for each role
