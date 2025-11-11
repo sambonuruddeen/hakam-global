@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TransformerSeeder extends Seeder
 {
@@ -13,5 +14,6 @@ class TransformerSeeder extends Seeder
     public function run(): void
     {
         //
+        DB::unprepared(file_get_contents(database_path('sql/transformers.sql')));
     }
 }
