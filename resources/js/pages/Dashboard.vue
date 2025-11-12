@@ -3,9 +3,12 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import DailyActivityTrend from '@/components/dashboard/DailyActivityTrend.vue';
 import TeamPerformance from '@/components/dashboard/TeamPerformance.vue';
 import DataQualityChart from '@/components/dashboard/DataQualityChart.vue';
+import ActivityHeatMap from '@/components/dashboard/ActivityHeatMap.vue';
+
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
+import SummaryStats from '@/components/dashboard/SummaryStats.vue';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,6 +23,11 @@ const pageProps = defineProps<{
     qualityStats: { label: string; value: number; color: string }[];
 }>();
 
+
+// Define static data for the SummaryStats component
+const staticSummaryStats = [
+
+];
 // Define static data for the DailyActivityTrend component
 const staticActivitiesTrend = [
     {
@@ -82,6 +90,26 @@ const staticTeamData = [
         total: 16,
     },
 ];
+
+// Define static data for the ActivityHeatMap component
+const staticHeatmapData = [
+    [9.8916, 8.8547],     // No intensity - density based
+    [9.8236, 8.8347],     // Same point - will show higher density
+    [9.8916, 8.8447],     // No intensity - density based
+    [9.8236, 8.8147],     // Same point - will show higher density
+    [9.8916, 8.8247],     // No intensity - density based
+    [9.8236, 8.8547],     // Same point - will show higher density
+    [9.8916, 8.8547],     // No intensity - density based
+    [9.8236, 8.8347],     // Same point - will show higher density
+    [9.8916, 8.8447],     // No intensity - density based
+    [9.8236, 8.8147],     // Same point - will show higher density
+    [9.8916, 8.8247],     // No intensity - density based
+    [9.8236, 8.8547],     // Same point - will show higher density
+    [9.8976, 8.8847],     // Slightly different
+    [9.8911, 8.3986], 
+    [9.7966, 8.3999],
+];
+
 </script>
 
 <template>
@@ -89,17 +117,30 @@ const staticTeamData = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
+             <div class="grid grid-cols-1 gap-4">
+                <SummaryStats :summary-stats="SummaryStats" />
+            </div>
             <div class="grid auto-rows-min gap-4 lg:grid-cols-3">
                 <DailyActivityTrend
-                    :activities-trend="pageProps.activitiesTrend"
+                    :activities-trend="staticActivitiesTrend"
                     class="lg:col-span-2"
                 />
-                <DataQualityChart :quality-stats="staticQualityStats" />
+                <!-- <DailyActivityTrend
+                    :activities-trend="pageProps.activitiesTrend"
+                    class="lg:col-span-2"
+                /> -->
+                <div class="flex flex-col gap-4">
+                    <DataQualityChart :quality-stats="staticQualityStats" />
+                    <ActivityHeatMap :heatmap-data="staticHeatmapData" />
+                </div>
             </div>
             <div class="grid grid-cols-1">
                 <!-- <TeamPerformance :team-data="pageProps.teamData" /> -->
+                <!-- <TeamPerformance :team-data="staticTeamData" /> -->
                 <TeamPerformance :team-data="staticTeamData" />
             </div>
+
+           
         </div>
     </AppLayout>
 </template>
