@@ -5,38 +5,25 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CustomerValidation extends Model
+class Customer extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'account_number',
-        'account_name',
+        'name',
         'address',
         'phone_number',
         'email',
-        'latitude',
-        'longitude',
-        'customer_type',
+        'account_number',
         'meter_number',
-        'meter_status',
-        'last_vending_date',
-        'billing_type',
-        'bill_delivery_method',
-        'last_bill_payment_date',
-        'transformer_id',
-        'new_customer',
-        'remarks',
-        'status',
-        'supervisor_remarks',
-        'photo',
+        'transformer',
         'created_by',
         'updated_by'
     ];
 
     public function transformer()
     {
-        return $this->belongsTo(Transformer::class, 'transformer_id');
+        return $this->belongsTo(Transformer::class, 'transformer');
     }
 
     public function createdBy()

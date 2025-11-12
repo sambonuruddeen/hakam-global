@@ -30,8 +30,9 @@ return new class extends Migration
             $table->string('transformer_id');
             $table->enum('new_customer', ['Illegal Connection', 'Not Connected', 'None'])->nullable();
             $table->text('remarks')->nullable();
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->enum('status', ['Approved', 'Rejected', 'Pending'])->default('Pending');
+            $table->text('supervisor_remarks')->nullable();
             $table->integer('created_by');
             $table->integer('updated_by')->nullable();
             $table->timestamps();

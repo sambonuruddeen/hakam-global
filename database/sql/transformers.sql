@@ -9256,5 +9256,3 @@ INSERT INTO `transformers` (`id`, `name`, `code`, `feeder11_id`, `created_at`, `
 INSERT INTO `transformers` (`id`, `name`, `code`, `feeder11_id`, `created_at`, `updated_at`) VALUES (9256, 'ONDO VILLAGE  S/S', 'OT-02-4D-54-83-10', 208, NULL, NULL);
 INSERT INTO `transformers` (`id`, `name`, `code`, `feeder11_id`, `created_at`, `updated_at`) VALUES (9257, 'IHS_BNU_0011B', 'OT-02-4D-54-83-0F', 208, NULL, NULL);
 INSERT INTO `transformers` (`id`, `name`, `code`, `feeder11_id`, `created_at`, `updated_at`) VALUES (9258, 'Matthew Agbidi', 'OT-02-4D-54-83-11', 208, NULL, NULL);
-INSERT INTO `transformers` (`id`, `name`, `code`, `feeder11_id`, `created_at`, `updated_at`) VALUES (9259, '', '', 0, NULL, NULL);
-INSERT INTO `transformers` (`id`, `name`, `code`, `feeder11_id`, `created_at`, `updated_at`) VALUES (9260, ' ', '', 0, NULL, NULL);

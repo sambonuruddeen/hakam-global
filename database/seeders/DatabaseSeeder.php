@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CustomerValidation;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -37,8 +38,8 @@ class DatabaseSeeder extends Seeder
             Feeder11Seeder::class,
             Feeder33Seeder::class,
             TransformerSeeder::class,
-            
+            CustomerValidationSeeder::class,
+            CustomerSeeder::class,
         ]);
-
     }
 }
