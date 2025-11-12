@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             Feeder33Seeder::class,
             TransformerSeeder::class,
             CustomerValidationSeeder::class,
+            CustomerSeeder::class,
         ]);
     }
 }
