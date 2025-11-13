@@ -133,4 +133,70 @@ return [
     ],
 
     'extensions' => [],
+
+    'schemas' => class_exists(\Dedoc\Scramble\Support\Generator\Type::class)
+        ? [
+            // Generic API Response
+            'ApiResponse' => \Dedoc\Scramble\Support\Generator\Type::object()
+                ->properties([
+                    'success' => \Dedoc\Scramble\Support\Generator\Type::boolean()->description('Indicates if request was successful'),
+                    'message' => \Dedoc\Scramble\Support\Generator\Type::string()->description('Human readable message'),
+                    'data'    => \Dedoc\Scramble\Support\Generator\Type::any()->nullable()->description('Response payload'),
+                    'errors'  => \Dedoc\Scramble\Support\Generator\Type::any()->nullable()->description('Validation or error details'),
+                    'meta'    => \Dedoc\Scramble\Support\Generator\Type::any()->nullable()->description('Optional metadata (e.g. pagination)'),
+                ]),
+
+            // Validation Error Response
+            'ValidationError' => \Dedoc\Scramble\Support\Generator\Type::object()
+                ->properties([
+                    'success' => \Dedoc\Scramble\Support\Generator\Type::boolean()->example(false),
+                    'message' => \Dedoc\Scramble\Support\Generator\Type::string()->example('Validation error'),
+                    'data'    => \Dedoc\Scramble\Support\Generator\Type::null(),
+                    'errors'  => \Dedoc\Scramble\Support\Generator\Type::object()->additionalProperties(
+                        \Dedoc\Scramble\Support\Generator\Type::array(\Dedoc\Scramble\Support\Generator\Type::string())
+                    )->description('Field-specific validation messages'),
+                ]),
+
+            // Paginated Response
+            'PaginatedResponse' => \Dedoc\Scramble\Support\Generator\Type::object()
+                ->properties([
+                    'success' => \Dedoc\Scramble\Support\Generator\Type::boolean()->example(true),
+                    'message' => \Dedoc\Scramble\Support\Generator\Type::string()->example('Data retrieved successfully'),
+                    'data'    => \Dedoc\Scramble\Support\Generator\Type::array(\Dedoc\Scramble\Support\Generator\Type::any())->description('List of resources'),
+                    'errors'  => \Dedoc\Scramble\Support\Generator\Type::null(),
+                    'meta'    => \Dedoc\Scramble\Support\Generator\Type::object()->properties([
+                        'page'     => \Dedoc\Scramble\Support\Generator\Type::integer()->example(1),
+                        'per_page' => \Dedoc\Scramble\Support\Generator\Type::integer()->example(10),
+                        'total'    => \Dedoc\Scramble\Support\Generator\Type::integer()->example(50),
+                    ])->description('Pagination metadata'),
+                ]),
+        ]
+        : [],
+
+    // Hooks to modify responses globally - schema generation to wrap every response in ApiResponse
+    'hooks' => class_exists(\Dedoc\Scramble\Support\Generator\Response::class)
+        ? [
+            'transformResponse' => function (\Dedoc\Scramble\Support\Generator\Response $response) {
+                // Skip non-JSON responses
+                if ($response->contentType !== 'application/json') {
+                    return $response;
+                }
+
+                // If already documented with ApiResponse, don’t wrap again
+                if ($response->schema && $response->schema->hasProperty('success')) {
+                    return $response;
+                }
+
+                // Wrap response schema inside ApiResponse
+                $original = $response->schema ?? \Dedoc\Scramble\Support\Generator\Type::any();
+
+                $response->schema = \Dedoc\Scramble\Support\Generator\Type::ref('ApiResponse')
+                    ->property('data', $original);
+
+                return $response;
+            },
+        ]
+        : [],
+
+        
 ];

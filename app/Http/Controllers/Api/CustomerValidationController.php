@@ -22,20 +22,29 @@ class CustomerValidationController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            return response()->json([
-                'message' => 'Your session has expired. Please login again.'
-            ], 401);
+            // return response()->json([
+            //     'message' => 'Your session has expired. Please login again.'
+            // ], 401);
+            return ApiResponse::error('Your session has expired. Please login again.', 401);
         }
 
         // Fetch enumerated customers with transformer relation (paginated)
         $customers = CustomerValidation::latest()->paginate(20);
 
-        // return ApiResponse::success(
-        //     EnumeratedCustomersResource::collection($customers),
-        //     'Enumerated Customers fetched successfully'
-        // );
+        return ApiResponse::success(
+            EnumeratedCustomersResource::collection($customers),
+            'Enumerated Customers fetched successfully',
+            [
+                'current_page' => $customers->currentPage(),
+                'next_page_url' => $customers->nextPageUrl(),
+                'prev_page_url' => $customers->previousPageUrl(),
+                'last_page'    => $customers->lastPage(),
+                'per_page'     => $customers->perPage(),
+                'total'        => $customers->total(),
+            ]
+        );
 
-        return ApiResponse::success($customers, 'Enumerated Customers fetched successfully');
+        // return ApiResponse::success($customers, 'Enumerated Customers fetched successfully');
     }
 
     /**
@@ -55,9 +64,10 @@ class CustomerValidationController extends Controller
         $user = auth()->user();
 
         if (!$user) {
-            return response()->json([
-                'message' => 'Your session has expired. Please login again.'
-            ], 401);
+            // return response()->json([
+            //     'message' => 'Your session has expired. Please login again.'
+            // ], 401);
+            return ApiResponse::error('Your session has expired. Please login again.', 401);
         }
 
         // Validate incoming request
@@ -85,10 +95,11 @@ class CustomerValidationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors'  => $validator->errors()
-            ], 422);
+            // return response()->json([
+            //     'message' => 'Validation failed',
+            //     'errors'  => $validator->errors()
+            // ], 422);
+            return ApiResponse::error('Validation failed', 422, $validator->errors());
         }
 
         // Check if customer exists and status is approved
@@ -132,10 +143,16 @@ class CustomerValidationController extends Controller
             ]
         );
 
-        return response()->json([
-            'message' => 'Customer Enumeration Created/Updated successfully',
-            'data'    => new EnumeratedCustomersResource($customer)
-        ], 200);
+        // return response()->json([
+        //     'message' => 'Customer Enumeration Created/Updated successfully',
+        //     'data'    => new EnumeratedCustomersResource($customer)
+        // ], 200);
+        
+        return ApiResponse::success(
+            new EnumeratedCustomersResource($customer),
+            'Customer Enumeration Created/Updated successfully'
+        );
+
     }
 
     /**
