@@ -14,4 +14,40 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/enumerations', function () {
+    return Inertia::render('Enumerations');
+})->middleware(['auth', 'verified'])->name('enumerations');
+
+Route::get('/map', function () {
+    return Inertia::render('MapPage');
+})->middleware(['auth', 'verified'])->name('map');
+
+Route::get('/asset', function () {
+    return Inertia::render('Assets/Assets');
+})->middleware(['auth', 'verified'])->name('asset');
+
+// Add Assets Route
+Route::get('/add-assets', function () {
+    return Inertia::render('Assets/AddAssets');
+})->middleware(['auth', 'verified'])->name('add-assets');
+
+Route::get('/reports', function () {
+    return Inertia::render('Reports');
+})->middleware(['auth', 'verified'])->name('reports');
+
+Route::group(['prefix' => 'access-control'], function () {
+   Route::get('/users', function () {
+       return Inertia::render('AccessControl/UsersList');
+   })->middleware(['auth', 'verified'])->name('settings.users');
+   
+   Route::get('/roles', function () {
+       return Inertia::render('RolePermission/Index');
+   })->middleware(['auth', 'verified'])->name('settings.roles');
+});
+// Route::get('/customers', function () {
+//     return Inertia::render('Customers');
+// })->middleware(['auth', 'verified'])->name('customers');
+
+
+
 require __DIR__.'/settings.php';

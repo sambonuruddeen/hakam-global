@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import DailyActivityTrend from '@/components/dashboard/DailyActivityTrend.vue';
-import TeamPerformance from '@/components/dashboard/TeamPerformance.vue';
+import FeederPerformance from '@/components/dashboard/FeederPerformance.vue';
 import DataQualityChart from '@/components/dashboard/DataQualityChart.vue';
 import ActivityHeatMap from '@/components/dashboard/ActivityHeatMap.vue';
 
@@ -93,21 +93,21 @@ const staticTeamData = [
 
 // Define static data for the ActivityHeatMap component
 const staticHeatmapData = [
-    [9.8916, 8.8547],     // No intensity - density based
-    [9.8236, 8.8347],     // Same point - will show higher density
-    [9.8916, 8.8447],     // No intensity - density based
-    [9.8236, 8.8147],     // Same point - will show higher density
-    [9.8916, 8.8247],     // No intensity - density based
-    [9.8236, 8.8547],     // Same point - will show higher density
-    [9.8916, 8.8547],     // No intensity - density based
-    [9.8236, 8.8347],     // Same point - will show higher density
-    [9.8916, 8.8447],     // No intensity - density based
-    [9.8236, 8.8147],     // Same point - will show higher density
-    [9.8916, 8.8247],     // No intensity - density based
-    [9.8236, 8.8547],     // Same point - will show higher density
-    [9.8976, 8.8847],     // Slightly different
-    [9.8911, 8.3986], 
-    [9.7966, 8.3999],
+    { lat: 9.8916, lng: 8.8547 },     // No intensity - density based
+    { lat: 9.8236, lng: 8.8347 },     // Same point - will show higher density
+    { lat: 9.8916, lng: 8.8447 },     // No intensity - density based
+    { lat: 9.8236, lng: 8.8147 },     // Same point - will show higher density
+    { lat: 9.8916, lng: 8.8247 },     // No intensity - density based
+    { lat: 9.8236, lng: 8.8547 },     // Same point - will show higher density
+    { lat: 9.8916, lng: 8.8547 },     // No intensity - density based
+    { lat: 9.8236, lng: 8.8347 },     // Same point - will show higher density
+    { lat: 9.8916, lng: 8.8447 },     // No intensity - density based
+    { lat: 9.8236, lng: 8.8147 },     // Same point - will show higher density
+    { lat: 9.8916, lng: 8.8247 },     // No intensity - density based
+    { lat: 9.8236, lng: 8.8547 },     // Same point - will show higher density
+    { lat: 9.8976, lng: 8.8847 },     // Slightly different
+    { lat: 9.8911, lng: 8.3986 }, 
+    { lat: 9.7966, lng: 8.3999 },
 ];
 
 </script>
@@ -131,13 +131,13 @@ const staticHeatmapData = [
                 /> -->
                 <div class="flex flex-col gap-4">
                     <DataQualityChart :quality-stats="staticQualityStats" />
-                    <ActivityHeatMap :heatmap-data="staticHeatmapData" />
+                    <ActivityHeatMap id="activity-heatmap" :heatmap-data="staticHeatmapData" />
                 </div>
             </div>
             <div class="grid grid-cols-1">
                 <!-- <TeamPerformance :team-data="pageProps.teamData" /> -->
                 <!-- <TeamPerformance :team-data="staticTeamData" /> -->
-                <TeamPerformance :team-data="staticTeamData" />
+                <FeederPerformance :feeder_data="staticTeamData" />
             </div>
 
            

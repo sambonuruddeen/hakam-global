@@ -55,6 +55,9 @@ class UserTableSeeder extends Seeder
                 'phone_number' => '1234567890',
                 'name' => ucwords($user),
                 'email_verified_at' => now(),
+                'two_factor_secret' => null, // Explicitly disable 2FA
+                'two_factor_recovery_codes' => null,
+                'two_factor_confirmed_at' => null, // Make sure this is null
             ]); // Ensure unique email for each role
 
             if ($user === 'admin') {

@@ -11,7 +11,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
+import { dashboard, enumerations, asset, reports, accessControl, } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid, LockKeyhole, UserCog, Users, UtilityPole, Map} from 'lucide-vue-next';
@@ -25,35 +25,35 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Map',
-        href: dashboard(),
+        href: '/map',
         icon: Map,
     },
     {
-        title: 'Reports',
-        href: dashboard(),
-        icon: BookOpen,
-    },
-    {
         title: 'Assets',
-        href: dashboard(),
+        href: asset(),
         icon: UtilityPole,
     },
     {
-        title: 'Customers',
-        href: '#',
+        title: 'Enumerations',
+        href: enumerations(),
         icon: Users,
+    },
+    {
+        title: 'Reports',
+        href: reports(),
+        icon: BookOpen,
     },
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Access Control',
-        href: '#',
+        href: accessControl('users'),
         icon: LockKeyhole,
     },
     {
         title: 'Roles & Permissions',
-        href: '#',
+        href: accessControl('roles'),
         icon: UserCog,
     },
 ];

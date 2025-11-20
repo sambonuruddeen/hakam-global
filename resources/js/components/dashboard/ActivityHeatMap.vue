@@ -86,11 +86,10 @@ onMounted(() => {
 });
 
 </script>
-
 <template>
-    <div class="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
-         <h3 class="mb-2 text-lg font-semibold">Field Activity</h3>
-        <l-map ref="map" v-model:zoom="zoom" :center="center" @ready="onMapReady">
+    <div class="relative flex h-full flex-col overflow-hidden rounded-xl border border-sidebar-border/70 p-4 dark:border-sidebar-border">
+         <h3 class="mb-2 flex-shrink-0 text-lg font-semibold">Field Activity</h3>
+        <l-map ref="map" v-model:zoom="zoom" :center="center" @ready="onMapReady" class="flex-grow">
             <l-tile-layer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 layer-type="base"
