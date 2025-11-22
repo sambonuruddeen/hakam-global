@@ -11,10 +11,10 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, enumerations, asset, reports, accessControl, } from '@/routes';
+import { dashboard, enumerations, asset, reports, users, roles } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, LockKeyhole, UserCog, Users, UtilityPole, Map} from 'lucide-vue-next';
+import { BookOpen, DollarSignIcon, LayoutGrid, LockKeyhole, UserCog, Car, Ship, Map, HelpCircleIcon, HeadphonesIcon} from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 
 const mainNavItems: NavItem[] = [
@@ -24,36 +24,47 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Map',
+        title: 'Cars',
+        href: enumerations(),
+        icon: Car,
+    },
+    {
+        title: 'Shipments',
         href: '/map',
+        icon: Ship,
+    },
+    {
+        title: 'Tracking',
+        href: asset(),
         icon: Map,
     },
     {
-        title: 'Assets',
-        href: asset(),
-        icon: UtilityPole,
+        title: 'Payments',
+        href: '#',
+        icon: DollarSignIcon,
     },
-    {
-        title: 'Enumerations',
-        href: enumerations(),
-        icon: Users,
-    },
+    
     {
         title: 'Reports',
         href: reports(),
         icon: BookOpen,
     },
+    {
+        title: 'Help & Support',
+        href: '#',
+        icon: HeadphonesIcon,
+    }
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Access Control',
-        href: accessControl('users'),
+        href: users(),
         icon: LockKeyhole,
     },
     {
         title: 'Roles & Permissions',
-        href: accessControl('roles'),
+        href: roles(),
         icon: UserCog,
     },
 ];

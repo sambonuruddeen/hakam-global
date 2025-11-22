@@ -35,15 +35,15 @@ Route::get('/reports', function () {
     return Inertia::render('Reports');
 })->middleware(['auth', 'verified'])->name('reports');
 
-Route::group(['prefix' => 'access-control'], function () {
-   Route::get('/users', function () {
-       return Inertia::render('AccessControl/UsersList');
-   })->middleware(['auth', 'verified'])->name('settings.users');
-   
-   Route::get('/roles', function () {
-       return Inertia::render('RolePermission/Index');
-   })->middleware(['auth', 'verified'])->name('settings.roles');
-});
+Route::get('/users', function () {
+    return Inertia::render('AccessControl/UsersList');
+})->middleware(['auth', 'verified'])->name('users');
+
+Route::get('/roles', function () {
+    return Inertia::render('RolePermission/Index');
+})->middleware(['auth', 'verified'])->name('roles');
+
+
 // Route::get('/customers', function () {
 //     return Inertia::render('Customers');
 // })->middleware(['auth', 'verified'])->name('customers');

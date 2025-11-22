@@ -21,36 +21,38 @@ class UserTableSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // API permissions
-        Permission::create(['guard_name' => 'api', 'name' => 'create validation']);
-        Permission::create(['guard_name' => 'api', 'name' => 'view validation']);
-        Permission::create(['guard_name' => 'api', 'name' => 'edit validation']);
-        Permission::create(['guard_name' => 'api', 'name' => 'delete validation']);
+        Permission::create(['guard_name' => 'api', 'name' => 'create car']);
+        Permission::create(['guard_name' => 'api', 'name' => 'view car']);
+        Permission::create(['guard_name' => 'api', 'name' => 'edit car']);
+        Permission::create(['guard_name' => 'api', 'name' => 'delete car']);
 
 
         // Web Permissions
-        Permission::create(['guard_name' => 'web', 'name' => 'create validation']);
-        Permission::create(['guard_name' => 'web', 'name' => 'view validation']);
-        Permission::create(['guard_name' => 'web', 'name' => 'edit validation']);
-        Permission::create(['guard_name' => 'web', 'name' => 'delete validation']);
+        Permission::create(['guard_name' => 'web', 'name' => 'create car']);
+        Permission::create(['guard_name' => 'web', 'name' => 'view car']);
+        Permission::create(['guard_name' => 'web', 'name' => 'edit car']);
+        Permission::create(['guard_name' => 'web', 'name' => 'delete car']);
 
         // Create roles
         Role::create(['name' => 'admin', 'guard_name' => 'web']);
         #$admin->givePermissionTo(Permission::all());
 
-        $enumerator = Role::create(['name' => 'enumerator', 'guard_name' => 'api']);
-        $enumerator->givePermissionTo(['create validation']);
+        $user = Role::create(['name' => 'staff', 'guard_name' => 'api']);
+        $user->givePermissionTo(['view car']);
 
-        $userRole = Role::create(['name' => 'supervisor', 'guard_name' => 'api']);
-        $userRole->givePermissionTo(['view validation']);
+        $supervisor = Role::create(['name' => 'supervisor', 'guard_name' => 'api']);
+        $supervisor->givePermissionTo(['view car', 'edit car']);
+
+        //  $staff = Role::create(['name' => 'staff', 'guard_name' => 'api']);
 
         // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
          // Create users
-        $users = ['admin', 'enumerator', 'supervisor'];
+        $users = ['admin', 'staff', 'supervisor'];
         foreach ($users as $user) {
             $new_user = User::factory()->create([
-                'email' => $user . '@fdc-app.com',
+                'email' => $user . '@hakamglobal.com',
                 'password' => Hash::make('password'),
                 'phone_number' => '1234567890',
                 'name' => ucwords($user),
