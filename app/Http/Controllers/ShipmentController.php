@@ -6,6 +6,7 @@ use App\Models\Shipment;
 use App\Http\Resources\ShipmentResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\ApiResponse;
 
 class ShipmentController extends Controller
 {
@@ -18,6 +19,9 @@ class ShipmentController extends Controller
     public function index(Request $request)
     {
         $query = Shipment::query();
+
+        // Eager load car orders and car shipments
+        $query->with(['carOrders', 'carShipments']);
 
         // Filter by status
         if ($request->has('status')) {
@@ -48,7 +52,19 @@ class ShipmentController extends Controller
         $perPage = $request->get('per_page', 15);
         $shipments = $query->paginate($perPage);
 
-        return ShipmentResource::collection($shipments);
+        // return ShipmentResource::collection($shipments);
+        return ApiResponse::success(
+            ShipmentResource::collection($shipments),
+            'Shipments retrieved successfully.',
+            [
+                'current_page' => $shipments->currentPage(),
+                'next_page_url' => $shipments->nextPageUrl(),
+                'prev_page_url' => $shipments->previousPageUrl(),
+                'last_page'    => $shipments->lastPage(),
+                'per_page'     => $shipments->perPage(),
+                'total'        => $shipments->total(),
+            ]
+        );
     }
 
     /**
@@ -64,11 +80,6 @@ class ShipmentController extends Controller
             'container_type' => 'required|string|max:255',
             'container_number' => 'required|string|unique:shipments',
             'tracking_number' => 'required|string|unique:shipments',
-            // Item being shipped
-            'item_description' => 'required|string|max:1000',
-            'vin' => 'nullable|string|max:255',
-            'item_value' => 'nullable|numeric|min:0',
-            'currency' => 'nullable|string|size:3',
             'origin' => 'required|string|max:255',
             'destination' => 'required|string|max:255',
             'shipment_date' => 'required|date',
@@ -106,11 +117,6 @@ class ShipmentController extends Controller
             'container_type' => 'sometimes|string|max:255',
             'container_number' => 'sometimes|string|unique:shipments,container_number,' . $shipment->id,
             'tracking_number' => 'sometimes|string|unique:shipments,tracking_number,' . $shipment->id,
-            // Item being shipped
-            'item_description' => 'sometimes|string|max:1000',
-            'vin' => 'sometimes|nullable|string|max:255',
-            'item_value' => 'sometimes|nullable|numeric|min:0',
-            'currency' => 'sometimes|nullable|string|size:3',
             'origin' => 'sometimes|string|max:255',
             'destination' => 'sometimes|string|max:255',
             'shipment_date' => 'sometimes|date',
