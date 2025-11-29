@@ -48,6 +48,14 @@ Route::get('/roles', function () {
 //     return Inertia::render('Customers');
 // })->middleware(['auth', 'verified'])->name('customers');
 
+// Car Makes Route
+
+// Car Models Route
+
+// Shipping Companies Route
+
+// Shipping Routes - Request, Schedule and allocate a container
+
 
 
 require __DIR__.'/settings.php';

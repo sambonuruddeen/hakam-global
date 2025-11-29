@@ -20,15 +20,20 @@ class ShipmentResource extends JsonResource
             'container_type' => $this->container_type,
             'container_number' => $this->container_number,
             'tracking_number' => $this->tracking_number,
-            'item_description' => $this->item_description,
-            'vin' => $this->vin,
-            'item_value' => $this->item_value,
-            'currency' => $this->currency,
             'origin' => $this->origin,
             'destination' => $this->destination,
             'shipment_date' => $this->shipment_date,
             'delivery_date' => $this->delivery_date,
             'status' => $this->status,
+            // New polymorphic shipment items (supports both platform and external cars)
+            'shipment_items' => ShipmentItemResource::collection($this->whenLoaded('shipmentItems')),
+            // Items separated by type for convenience
+            'car_orders' => CarOrdersResource::collection($this->whenLoaded('carOrders')),
+            'external_items' => ExternalItemResource::collection($this->whenLoaded('externalItems')),
+            // Payment transactions for shipping costs
+            'payment_transactions' => PaymentTransactionResource::collection($this->whenLoaded('paymentTransactions')),
+            // Legacy support for old car_shipments table
+            'car_shipments' => \App\Http\Resources\CarShipmentResource::collection($this->whenLoaded('carShipments')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
