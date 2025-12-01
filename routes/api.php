@@ -35,10 +35,10 @@ Route::prefix('v1')->group(function () {
         Route::resource('vendors', VendorsController::class);
 
         // Makes (manufacturers)
-        // Route::resource('makes', MakesController::class);
+        Route::resource('makes', MakesController::class);
 
         // Car Models (by make)
-        // Route::resource('car-models', CarModelsController::class);
+        Route::resource('car-models', CarModelsController::class);
 
         // Car Listings (inventory with per-car pricing)
         Route::resource('car-listings', CarListingsController::class);

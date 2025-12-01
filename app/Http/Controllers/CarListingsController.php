@@ -11,6 +11,8 @@ class CarListingsController extends Controller
 {
     /**
      * Display car listings with filtering.
+     * 
+     * 
      */
     public function index(Request $request)
     {
@@ -87,12 +89,14 @@ class CarListingsController extends Controller
 
     /**
      * Store a new car listing.
+     * 
+     * @
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'car_model_id' => 'required|exists:car_models,id',
-            'vendor_id' => 'nullable|exists:vendors,id',
+            'vendor_id' => 'nullable',
             'vin' => 'required|string|unique:car_listings,vin',
             'color' => 'nullable|string',
             'mileage' => 'nullable|integer|min:0',

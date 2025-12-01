@@ -11,6 +11,7 @@ class CarListing extends Model
     protected $table = 'car_listings';
 
     protected $fillable = [
+        'car_model_id',
         'vin',
         'make',
         'model',
@@ -27,8 +28,10 @@ class CarListing extends Model
         'condition',
         'location',
         'options',
+        'price',
         'status',
         'additional_notes',
+        'added_by'
     ];
 
     protected $casts = [
