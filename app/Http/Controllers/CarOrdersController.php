@@ -129,7 +129,7 @@ class CarOrdersController extends Controller
     public function update(Request $request, CarOrders $carOrder)
     {
         $validated = $request->validate([
-            'order_status' => 'sometimes|in:Requested,Purchase Confirmed,Awaiting Pickup,Queued for Shipment,Shipped,Delivered',
+            'order_status' => 'sometimes|in:Requested,Purchase Confirmed,Awaiting Pickup,Queued for Shipment,Shipped,Delivered,Cancelled',
             'purchase_date' => 'sometimes|date',
             'shipment_id' => 'sometimes|nullable|exists:shipments,id',
         ]);
