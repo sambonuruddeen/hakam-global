@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Helpers\ApiResponse;
-use App\Models\CarOrders; 
+use App\Models\CarOrders;
 use App\Http\Resources\CarOrdersResource;
 
 
 class CarOrdersController extends Controller
 {
-    
+
     /**
      * Display a listing of all car orders.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -79,22 +79,21 @@ class CarOrdersController extends Controller
 
     /**
      * Store a newly created car order.
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'car_listing_id' => 'required|exists:car_listings,id|unique:car_orders,car_listing_id',
             'purchase_price' => 'required|numeric|min:0.01',
             'purchase_currency' => 'sometimes|string|size:3',
-            'order_status' => 'required|in:Requested,Purchase Confirmed,Awaiting Pickup,Queued for Shipment,Shipped,Delivered',
-            'purchase_date' => 'required|date',
             'shipment_id' => 'nullable|exists:shipments,id',
         ]);
 
+        $validated['user_id'] = auth()->id();
+        $validated['purchase_date'] = now()->format('Y-m-d');
         $order = CarOrders::create($validated);
 
         return ApiResponse::success(
@@ -107,7 +106,7 @@ class CarOrdersController extends Controller
 
     /**
      * Display the specified car order.
-     * 
+     *
      * @param CarOrders $carOrder
      * @return \Illuminate\Http\JsonResponse
      */
@@ -122,7 +121,7 @@ class CarOrdersController extends Controller
 
     /**
      * Update the specified car order.
-     * 
+     *
      * @param Request $request
      * @param CarOrders $carOrder
      * @return \Illuminate\Http\JsonResponse
@@ -145,7 +144,7 @@ class CarOrdersController extends Controller
 
     /**
      * Remove the specified car order.
-     * 
+     *
      * @param CarOrders $carOrder
      * @return \Illuminate\Http\JsonResponse
      */
@@ -161,7 +160,7 @@ class CarOrdersController extends Controller
 
     /**
      * Get orders by status.
-     * 
+     *
      * @param string $status
      * @return \Illuminate\Http\JsonResponse
      */
@@ -186,7 +185,7 @@ class CarOrdersController extends Controller
 
     /**
      * Get orders for a specific user.
-     * 
+     *
      * @param int $userId
      * @return \Illuminate\Http\JsonResponse
      */
@@ -201,5 +200,4 @@ class CarOrdersController extends Controller
             'Car orders for user retrieved successfully.'
         );
     }
-
 }
