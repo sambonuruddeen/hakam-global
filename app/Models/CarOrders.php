@@ -75,4 +75,10 @@ class CarOrders extends Model
         return $this->paymentTransactions()
             ->where('transaction_type', 'Car Purchase');
     }
+
+    public function payments()
+    {
+        return $this->morphMany(PaymentTransaction::class, 'related');
+    }
+
 }

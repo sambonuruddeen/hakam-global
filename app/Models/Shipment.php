@@ -79,4 +79,10 @@ class Shipment extends Model
         return $this->hasMany(PaymentTransaction::class, 'related_id')
             ->where('related_type', 'App\Models\Shipment');
     }
+
+    public function payments()
+    {
+        return $this->morphMany(PaymentTransaction::class, 'related');
+    }
+
 }

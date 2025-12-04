@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Helpers\ApiResponse;
 use App\Models\PaymentTransaction;
 use App\Http\Resources\PaymentTransactionResource;
+use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PaymentTransactionsController extends Controller
 {
@@ -84,17 +86,32 @@ class PaymentTransactionsController extends Controller
     {
         $validated = $request->validate([
             'transaction_type' => 'required|in:Car Purchase,Shipping',
-            'related_id' => 'required|integer',
+            'related_id'   => 'required|integer',
             'related_type' => 'required|in:App\Models\CarOrder,App\Models\Shipment',
-            'amount' => 'required|numeric|min:0.01',
-            'currency' => 'sometimes|string|size:3',
-            'payment_status' => 'sometimes|in:Pending,Completed,Failed,Refunded',
-            'payment_method' => 'nullable|string',
-            'payment_date' => 'nullable|date',
+            'amount'          => 'required|numeric|min:0.01',
+            'currency'        => 'nullable|string|size:3',
+            'payment_status'  => 'nullable|in:Pending,Completed,Failed,Refunded',
+            'payment_method'  => 'nullable|string',
+            'payment_date'    => 'nullable|date',
             'reference_number' => 'nullable|string|unique:payment_transactions,reference_number',
-            'notes' => 'nullable|string',
+            'notes'           => 'nullable|string',
         ]);
 
+        // Set default values
+        if (!isset($validated['currency'])) {
+            $validated['currency'] = 'NGN';
+        }
+
+        if (!isset($validated['payment_status'])) {
+            $validated['payment_status'] = 'Pending';
+        }
+
+        // Auto-generate reference number if missing
+        if (!isset($validated['reference_number'])) {
+            $validated['reference_number'] = 'REF-' . strtoupper(Str::random(10));
+        }
+
+        // Create the transaction
         $transaction = PaymentTransaction::create($validated);
 
         return ApiResponse::success(

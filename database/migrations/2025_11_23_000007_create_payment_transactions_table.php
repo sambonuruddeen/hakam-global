@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('related_type'); // 'App\Models\CarOrder' or 'App\Models\Shipment'
             $table->decimal('amount', 15, 2);
             $table->string('currency', 3)->default('NGN');
-            $table->enum('payment_status', ['Pending', 'Completed', 'Failed', 'Refunded'])->default('Pending');
+            $table->enum('payment_status', ['Pending', 'Completed', 'Cancelled', 'Refunded'])->default('Pending');
             $table->string('payment_method')->nullable(); // Credit Card, Bank Transfer, etc.
             $table->date('payment_date')->nullable();
             $table->string('reference_number')->unique()->nullable(); // Invoice/Transaction ID
