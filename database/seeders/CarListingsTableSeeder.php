@@ -22,6 +22,7 @@ class CarListingsTableSeeder extends Seeder
                 'color' => 'Red',
                 'mileage' => 15000,
                 'condition' => 'Used',
+                'year' => 2020,
                 'currency' => 'USD',
                 'location' => 'New York, NY',
                 'status' => 'available',
@@ -35,6 +36,7 @@ class CarListingsTableSeeder extends Seeder
                 'color' => 'Red',
                 'mileage' => 15000,
                 'condition' => 'Used',
+                'year' => 2001,
                 'currency' => 'USD',
                 'location' => 'New York, NY',
                 'status' => 'available',
@@ -48,6 +50,7 @@ class CarListingsTableSeeder extends Seeder
                 'color' => 'Red',
                 'mileage' => 15000,
                 'condition' => 'Used',
+                'year' => 2013,
                 'currency' => 'USD',
                 'location' => 'New York, NY',
                 'status' => 'sold',
@@ -58,6 +61,5 @@ class CarListingsTableSeeder extends Seeder
         foreach ($car_listings as $listing) {
             \App\Models\CarListing::create($listing);
         }
-
     }
 }

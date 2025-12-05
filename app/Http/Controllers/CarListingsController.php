@@ -11,8 +11,8 @@ class CarListingsController extends Controller
 {
     /**
      * Display car listings with filtering.
-     * 
-     * 
+     *
+     *
      */
     public function index(Request $request)
     {
@@ -89,7 +89,7 @@ class CarListingsController extends Controller
 
     /**
      * Store a new car listing.
-     * 
+     *
      * @
      */
     public function store(Request $request)
@@ -101,10 +101,12 @@ class CarListingsController extends Controller
             'color' => 'nullable|string',
             'mileage' => 'nullable|integer|min:0',
             'condition' => 'required|in:New,Used,Certified Pre-Owned',
+            'year' => 'required|integer|min:1900|max:' . date('Y') + 1,
             'price' => 'required|numeric|min:0',
             'currency' => 'sometimes|string|size:3',
             'status' => 'sometimes|in:Available,Sold,Reserved,In Transit',
             'location' => 'nullable|string',
+            'additional_notes' => 'nullable|string',
         ]);
 
         $validated['added_by'] = auth()->id();

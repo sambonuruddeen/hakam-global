@@ -14,16 +14,11 @@ class ExternalItemsController extends Controller
      */
     public function index(Request $request)
     {
-        $query = ExternalItem::query()->with('vendor');
+        $query = ExternalItem::query()->with('vendor', 'carModel');
 
         // Filter by vendor
         if ($request->has('vendor_id')) {
             $query->where('vendor_id', $request->get('vendor_id'));
-        }
-
-        // Filter by make
-        if ($request->has('make')) {
-            $query->where('make', 'like', '%' . $request->get('make') . '%');
         }
 
         // Filter by model
@@ -81,17 +76,20 @@ class ExternalItemsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'vin' => 'nullable|string|unique:external_items,vin',
-            'description' => 'required|string',
-            'make' => 'nullable|string',
-            'model' => 'nullable|string',
-            'year' => 'nullable|integer|min:1900|max:' . date('Y') + 1,
+            'vin' => 'required|string|unique:external_items,vin',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string',
+            'car_model_id' => 'required|string',
+            'year' => 'required|integer|min:1900|max:' . date('Y') + 1,
             'price' => 'required|numeric|min:0',
             'currency' => 'sometimes|string|size:3',
-            'vendor_id' => 'nullable|exists:vendors,id',
             'source_info' => 'nullable|string',
+            'color' => 'required|string',
+            'mileage' => 'nullable|string',
+            'condition' => 'required|string',
         ]);
 
+        $validated['added_by'] = auth()->id();
         $item = ExternalItem::create($validated);
 
         return ApiResponse::success(
@@ -107,7 +105,7 @@ class ExternalItemsController extends Controller
      */
     public function show(ExternalItem $externalItem)
     {
-        $externalItem->load('vendor');
+        $externalItem->load('vendor', 'carModel');
         return ApiResponse::success(
             new ExternalItemResource($externalItem),
             'External item retrieved successfully.'

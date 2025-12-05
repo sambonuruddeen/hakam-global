@@ -14,13 +14,16 @@ class ExternalItem extends Model
     protected $fillable = [
         'vin',
         'description',
-        'make',
-        'model',
+        'car_model_id',
         'year',
         'price',
         'currency',
-        'vendor_id',
+        'added_by',
         'source_info',
+        'location',
+        'condition',
+        'mileage',
+        'color'
     ];
 
     protected $casts = [
@@ -33,7 +36,12 @@ class ExternalItem extends Model
      */
     public function vendor(): BelongsTo
     {
-        return $this->belongsTo(Vendor::class);
+        return $this->belongsTo(User::class);
+    }
+
+    public function carModel(): BelongsTo
+    {
+        return $this->belongsTo(CarModel::class, 'car_model_id');
     }
 
     /**

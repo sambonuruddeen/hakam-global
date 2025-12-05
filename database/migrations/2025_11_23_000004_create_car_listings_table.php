@@ -19,10 +19,12 @@ return new class extends Migration
             $table->string('color')->nullable();
             $table->integer('mileage')->nullable();
             $table->string('condition')->default('Used'); // New, Used, Certified Pre-Owned
+            $table->integer('year');
             $table->decimal('price', 15, 2);  // Per-car pricing
             $table->string('currency', 3)->default('NGN');
             $table->enum('status', ['Available', 'Sold', 'Reserved', 'In Transit'])->default('Available');
             $table->string('location')->nullable();
+            $table->string('additional_notes')->nullable();
             $table->foreignId('added_by')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
