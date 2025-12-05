@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('car_shipments', function (Blueprint $table) {
             // $table->id();
             $table->foreignId('car_order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('external_item_id')->constrained()->onDelete('cascade');
             $table->foreignId('shipment_id')->constrained()->onDelete('cascade');
-            $table->primary(['car_order_id', 'shipment_id']);
+            $table->primary(['car_order_id', 'external_item_id', 'shipment_id']);
             $table->timestamps();
         });
     }

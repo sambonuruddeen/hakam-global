@@ -8,6 +8,7 @@ use App\Models\Shipment;
 use App\Http\Resources\CarShipmentResource;
 use Illuminate\Http\Request;
 use App\Helpers\ApiResponse;
+use App\Models\ExternalItem;
 
 class CarShipmentsController extends Controller
 {
@@ -16,7 +17,7 @@ class CarShipmentsController extends Controller
      */
     public function index(Request $request)
     {
-        $query = CarShipments::query()->with(['carOrder', 'shipment']);
+        $query = CarShipments::query()->with(['carOrder', 'externalItem', 'shipment']);
 
         // Filter by shipment
         if ($request->has('shipment_id')) {
@@ -28,11 +29,15 @@ class CarShipmentsController extends Controller
             $query->where('car_order_id', $request->get('car_order_id'));
         }
 
+        if ($request->has('external_item_id')) {
+            $query->where('external_item_id', $request->get('external_item_id'));
+        }
+
         // Pagination
         $perPage = $request->get('per_page', 15);
         $carShipments = $query->paginate($perPage);
 
-        if( $carShipments->isEmpty() ) {
+        if ($carShipments->isEmpty()) {
             return ApiResponse::success(
                 [],
                 'No car shipments found.',
@@ -64,12 +69,17 @@ class CarShipmentsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'car_order_id' => 'required|exists:car_orders,id',
+            'car_order_id' => 'nullable|exists:car_orders,id',
             'shipment_id' => 'required|exists:shipments,id',
+            'external_item_id' => 'nullable|exists:external_items,id',
         ]);
 
         // Check if association already exists
         $exists = CarShipments::where('car_order_id', $validated['car_order_id'])
+            ->where('shipment_id', $validated['shipment_id'])
+            ->exists();
+
+        $exists = CarShipments::where('external_item_id', $validated['external_item_id'])
             ->where('shipment_id', $validated['shipment_id'])
             ->exists();
 
@@ -83,7 +93,7 @@ class CarShipmentsController extends Controller
         // Update the car order's shipment_id for direct reference
         CarOrders::find($validated['car_order_id'])->update(['shipment_id' => $validated['shipment_id']]);
 
-        if(!$carShipment) {
+        if (!$carShipment) {
             return ApiResponse::error('Failed to assign car order to shipment.', 500);
         }
 
@@ -99,7 +109,7 @@ class CarShipmentsController extends Controller
      */
     public function show(CarShipments $carShipment)
     {
-        $carShipment->load('carOrder', 'shipment');
+        $carShipment->load('carOrder', 'externalItem', 'shipment');
         // return new CarShipmentResource($carShipment);
         return ApiResponse::success(
             new CarShipmentResource($carShipment),

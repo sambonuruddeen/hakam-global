@@ -11,6 +11,7 @@ class CarShipments extends Model
 
     protected $fillable = [
         'car_order_id',
+        'external_item_id',
         'shipment_id',
     ];
 
@@ -20,6 +21,14 @@ class CarShipments extends Model
     public function carOrder(): BelongsTo
     {
         return $this->belongsTo(CarOrders::class);
+    }
+
+    /**
+     * Get the External Item for this shipment record.
+     */
+    public function externalItem(): BelongsTo
+    {
+        return $this->belongsTo(ExternalItem::class);
     }
 
     /**

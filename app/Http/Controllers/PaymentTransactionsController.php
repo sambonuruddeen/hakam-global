@@ -90,7 +90,7 @@ class PaymentTransactionsController extends Controller
             'related_type' => 'required|in:App\Models\CarOrder,App\Models\Shipment',
             'amount'          => 'required|numeric|min:0.01',
             'currency'        => 'nullable|string|size:3',
-            'payment_status'  => 'nullable|in:Pending,Completed,Failed,Refunded',
+            'payment_status'  => 'nullable|in:Pending,Completed,Cancelled,Refunded',
             'payment_method'  => 'nullable|string',
             'payment_date'    => 'nullable|date',
             'reference_number' => 'nullable|string|unique:payment_transactions,reference_number',
