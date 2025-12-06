@@ -13,6 +13,7 @@ class ExternalItemResource extends JsonResource
             'id' => $this->id,
             'vin' => $this->vin,
             'description' => $this->description,
+            'car_model_id' => $this->car_model_id,
             'car_model' => new CarModelResource($this->whenLoaded('carModel')),
             'year' => $this->year,
             'price' => (float)$this->price,

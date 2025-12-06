@@ -111,6 +111,7 @@ class PaymentTransactionsController extends Controller
             $validated['reference_number'] = 'REF-' . strtoupper(Str::random(10));
         }
 
+        $validated['payment_date'] = now()->format('Y-m-d');
         // Create the transaction
         $transaction = PaymentTransaction::create($validated);
 

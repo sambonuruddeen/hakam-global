@@ -138,20 +138,25 @@ class CarListingsController extends Controller
     public function update(Request $request, CarListing $carListing)
     {
         $validated = $request->validate([
+            'car_model_id' => 'required|exists:car_models,id',
+            'vendor_id' => 'nullable|integer',
+            'vin' => 'required|string|unique:car_listings,vin,' . $carListing->id,
             'color' => 'nullable|string',
             'mileage' => 'nullable|integer|min:0',
-            'condition' => 'sometimes|in:New,Used,Certified Pre-Owned',
-            'price' => 'sometimes|numeric|min:0',
+            'condition' => 'required|in:New,Used,Certified Pre-Owned',
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'price' => 'required|numeric|min:0',
             'currency' => 'sometimes|string|size:3',
-            'status' => 'sometimes|in:Available,Sold,Reserved,In Transit',
             'location' => 'nullable|string',
-            'vendor_id' => 'nullable|exists:vendors,id',
+            'additional_notes' => 'nullable|string',
         ]);
 
         $carListing->update($validated);
 
         return ApiResponse::success(
-            new CarListingResource($carListing->load('carModel.make', 'vendor', 'addedBy', 'carOrder')),
+            new CarListingResource(
+                $carListing->load('carModel.make', 'vendor', 'addedBy', 'carOrder')
+            ),
             'Car listing updated successfully.'
         );
     }

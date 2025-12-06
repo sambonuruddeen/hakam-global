@@ -118,14 +118,17 @@ class ExternalItemsController extends Controller
     public function update(Request $request, ExternalItem $externalItem)
     {
         $validated = $request->validate([
-            'description' => 'sometimes|string',
-            'make' => 'nullable|string',
-            'model' => 'nullable|string',
-            'year' => 'nullable|integer|min:1900|max:' . date('Y') + 1,
-            'price' => 'sometimes|numeric|min:0',
+            'description' => 'nullable|string',
+            'location' => 'nullable|string',
+            'car_model_id' => 'required|integer',
+            'year' => 'required|integer|min:1900|max:' . date('Y') + 1,
+            'price' => 'required|numeric|min:0',
             'currency' => 'sometimes|string|size:3',
-            'vendor_id' => 'nullable|exists:vendors,id',
+            'vin' => 'required|string|unique:external_items,vin,' . $externalItem->id,
             'source_info' => 'nullable|string',
+            'color' => 'required|string',
+            'mileage' => 'nullable|numeric',
+            'condition' => 'required|string',
         ]);
 
         $externalItem->update($validated);
